@@ -1,6 +1,5 @@
 module.exports = (sequelize, dataTypes) => {
   let alias = "Genre";
-
   let cols = {
     id: {
       type: dataTypes.INTEGER(11),
@@ -18,7 +17,6 @@ module.exports = (sequelize, dataTypes) => {
       allowNull: false,
     },
   };
-
   let config = {
     timestamps: true,
     createdAt: "created_at",
@@ -36,4 +34,6 @@ module.exports = (sequelize, dataTypes) => {
       timestamps: false,
     });
   };
+  
+  return Genre
 };

@@ -1,6 +1,5 @@
 module.exports = (sequelize, dataTypes) => {
   let alias = "Character";
-
   let cols = {
     id: {
       type: dataTypes.INTEGER(11),
@@ -17,7 +16,7 @@ module.exports = (sequelize, dataTypes) => {
       type: dataTypes.INTEGER(10),
       allowNull: false,
     },
-    weight: {
+    height: {
       type: dataTypes.STRING(10),
       allowNull: false,
     },
@@ -30,7 +29,6 @@ module.exports = (sequelize, dataTypes) => {
       allowNull: false,
     },
   };
-
   let config = {
     timestamps: true,
     createdAt: "created_at",
@@ -44,8 +42,10 @@ module.exports = (sequelize, dataTypes) => {
       as: "productions",
       through: "character_production",
       foreignKey: "character_id",
-      otherKey: "product_id",
+      otherKey: "production_id",
       timestamps: false,
     });
   };
+
+  return Character;
 };

@@ -1,6 +1,5 @@
 module.exports = (sequelize, dataTypes) => {
   let alias = "Production";
-
   let cols = {
     id: {
       type: dataTypes.INTEGER(11),
@@ -18,12 +17,11 @@ module.exports = (sequelize, dataTypes) => {
       allowNull: false,
     },
   };
-
   let config = {
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-    tableName: "genres",
+    tableName: "productions",
   };
   const Production = sequelize.define(alias, cols, config);
 
@@ -35,5 +33,15 @@ module.exports = (sequelize, dataTypes) => {
       otherKey: "genre_id",
       timestamps: false,
     });
+
+    Production.belongsToMany(models.Production, {
+      as: "characters",
+      through: "character_production",
+      foreignKey: "production_id",
+      otherKey: "character_id",
+      timestamps: false,
+    });
   };
+
+  return Production;
 };
