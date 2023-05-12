@@ -4,9 +4,13 @@ const Character = db.Character;
 
 const charactersController = {
   characterList: async (req, res) => {
-    const name = req.params.name;
+    const name = req.query.name;
+    const age = req.query.age;
+    /* const movieId = req.query.movieId; */
+
+    console.log(name);
     try {
-      if (!name) {
+      if (!name && !age/*  && !movieId */) {
         const characters = await Character.findAll({
           attributes: { exclude: ["height", "age", "story"] },
         });
@@ -24,11 +28,55 @@ const charactersController = {
           data: character,
         };
         res.json(response);
-      }
+      } else if (age) {
+        const character = await Character.findOne({
+          where: { age: { [Op.like]: "%" + age + "%" } },
+        });
+        let response = {
+          meta: { status: 200, url: `/characters/${age}` },
+          data: character,
+        };
+        res.json(response);
+      } /* else if (movieId) {
+        const character = await Character.findOne({
+          where: { id: { [Op.like]: "%" + movieId + "%" } },
+        });
+        let response = {
+          meta: { status: 200, url: `/characters/${movieId}` },
+          data: character,
+        };
+        res.json(response);
+      } */
     } catch (err) {
       res.send(err);
     }
   },
+  /*   characterByAge: async (req, res) => {
+    const age = req.params.age;
+    try {
+      if (!age) {
+        const characters = await Character.findAll({
+          attributes: { exclude: ["height", "age", "story"] },
+        });
+        let response = {
+          meta: { status: 200, total: characters.length, url: "/characters" },
+          data: characters,
+        };
+        res.json(response);
+      } else if (age) {
+        const character = await Character.findOne({
+          where: { name: { [Op.like]: "%" + age + "%" } },
+        });
+        let response = {
+          meta: { status: 200, url: `/characters/${age}` },
+          data: character,
+        };
+        res.json(response);
+      }
+    } catch (err) {
+      res.send(err);
+    }
+  }, */
   characterCreate: async (req, res) => {
     try {
       let character = await Character.create({
