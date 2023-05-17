@@ -7,8 +7,6 @@ const charactersController = {
     const name = req.query.name;
     const age = req.query.age;
     /* const movieId = req.query.movieId; */
-
-    console.log(name);
     try {
       if (!name && !age /*  && !movieId */) {
         const characters = await Character.findAll({
@@ -24,21 +22,37 @@ const charactersController = {
           where: { name: { [Op.like]: "%" + name + "%" } },
           attributes: { exclude: ["height", "age", "story"] },
         });
-        const response = {
-          meta: { status: 200, url: `/characters/name/${name}` },
-          data: character,
-        };
-        res.json(response);
+        if (character.length === 0) {
+          const response = {
+            meta: { status: 404, url: `/characters/name/${name}` },
+            message: `No se encontró ningún personaje con el nombre ${name}`,
+          };
+          res.json(response);
+        } else {
+          const response = {
+            meta: { status: 200, url: `/characters/name/${name}` },
+            data: character,
+          };
+          res.json(response);
+        }
       } else if (age) {
         const character = await Character.findAll({
           where: { age: { [Op.like]: "%" + age + "%" } },
-          attributes: { exclude: ["height", "age", "story"] },
+          attributes: { exclude: ["height", "story"] },
         });
-        const response = {
-          meta: { status: 200, url: `/characters/age/${age}` },
-          data: character,
-        };
-        res.json(response);
+        if (character.length === 0) {
+          const response = {
+            meta: { status: 404, url: `/characters/age/${age}` },
+            message: `No se encontró ningún personaje con la edad de ${age} años`,
+          };
+          res.json(response);
+        } else {
+          const response = {
+            meta: { status: 200, url: `/characters/age/${age}` },
+            data: character,
+          };
+          res.json(response);
+        }
       } /* else if (movieId) {
         const character = await Character.findOne({
           where: { id: { [Op.like]: "%" + movieId + "%" } },
