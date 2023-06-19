@@ -1,11 +1,12 @@
-/* const db = require("../database/models"); */
+const db = require("../database/models");
+const User = db.User
 /* const Character = db.Character; */
 
-const charactersController = {
-  characterList: async (req, res) => {
-    console.log("hola");
-    res.send("hola")
+const usersController = {
+  prueba: (req, res) => {
+    console.log("la ruta funciona");
+    res.send("la ruta funciona");
   },
 };
 
-module.exports = charactersController;
+module.exports = usersController;
